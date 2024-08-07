@@ -1414,3 +1414,271 @@ public class ArrayEx8 {
 3번 학생의 총점: 90, 평균: 30.0
 4번 학생의 총점: 120, 평균: 40.0
 ```
+
+## 문제와 풀이3
+
+### 상품 관리 프로그램 만들기
+
+자를 이용하여 상품 관리 프로그램을 만들어 보자. 이 프로그램은 다음의 기능이 필요하다.
+
+- 상품 등록: 상품 이름과 가격을 입력받아 저장.
+- 상품 목록: 지금까지 등록한 모든 상품의 목록을 출력.
+
+다음과 같이 동작한다.
+
+- 첫 화면에서 사용자에게 세 가지 선택을 제시 “1. 상품등록”, ”2. 상품 목록”, ”3. 종료”
+- “1. 상품 등록”을 선택하면, 사용자로부터 상품 이름과 가격을 입력받아 배열에 저장
+- “2. 상품 목록”을 선택하면, 배열에 저장된 모든 상품 출력
+- “3. 종료”를 선택하면 프로그램 종료
+
+**제약조건**
+
+상품은 최대 10개 까지 등록 가능.
+
+사용해야하는 변수 및 구조
+
+- `Scanner scanner`: 사용자 입력을 받기 위한 객체
+- `String[] productName`: 상품의 이름을 받기 위한 String 배열
+- `int[] productPrices`: 상품 가격을 저장할 int 배열
+- `int productCount`: 현재 등록된 상품의 개수를 저장할 int변수
+
+**실행 결과 예시**
+
+**ProductAdminEx_1 (내가 작성한 코드)**
+
+```java
+package array.ex;
+
+import java.util.Scanner;
+
+public class ProductAdminEx_1 {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        String[] productName = new String[10];  // 상품 이름 최대 등록 갯수 10개
+        int[] productPrice = new int[10];  // 상품 가격 최대 등록 갯수 10개
+        int productCount = 0;  // 현재 상품 등록 개수
+
+        while (true) {
+            System.out.println("1. 상품 등록 | 2. 상품 목록 | 3. 종료");
+            System.out.print("메뉴를 선택하세요: ");
+            int select = scanner.nextInt();
+            scanner.nextLine();  // \n 버림
+            if (select == 1) {
+                if (productCount == 10) {
+                    System.out.println("더 이상 상품을 등록할 수 없습니다.");
+                } else {
+                    System.out.print("상품 이름을 입력하세요: ");
+                    String name = scanner.nextLine();
+                    productName[productCount] = name;
+
+                    System.out.print("상품 가격을 입력하세요: ");
+                    int price = scanner.nextInt();
+                    productPrice[productCount] = price;
+                    productCount++;
+                }
+
+            } else if (select == 2) {
+                if (productCount == 0) {
+                    System.out.println("등록된 상품이 없습니다.");
+                } else {
+                    for (int i = 0; i < productCount; i++) {
+                        System.out.println(productName[i] + ": " + productPrice[i]);
+                    }
+                }
+
+            } else if (select == 3) {
+                System.out.println("프로그램을 종료합니다.");
+                break;
+            } else {
+                System.out.println("올바른 명령어를 입력하세요.");
+            }
+        }
+    }
+}
+```
+
+**실행 결과**
+
+```java
+1. 상품 등록 | 2. 상품 목록 | 3. 종료
+메뉴를 선택하세요: 1
+상품 이름을 입력하세요: MacBook Air
+상품 가격을 입력하세요: 1390000
+1. 상품 등록 | 2. 상품 목록 | 3. 종료
+메뉴를 선택하세요: 1
+상품 이름을 입력하세요: MacBook Pro
+상품 가격을 입력하세요: 1690000
+1. 상품 등록 | 2. 상품 목록 | 3. 종료
+메뉴를 선택하세요: 1
+상품 이름을 입력하세요: Ipad Pro
+상품 가격을 입력하세요: 1499000
+1. 상품 등록 | 2. 상품 목록 | 3. 종료
+메뉴를 선택하세요: 1
+상품 이름을 입력하세요: Ipad Air
+상품 가격을 입력하세요: 899000
+1. 상품 등록 | 2. 상품 목록 | 3. 종료
+메뉴를 선택하세요: 1
+상품 이름을 입력하세요: Ipad
+상품 가격을 입력하세요: 529000
+1. 상품 등록 | 2. 상품 목록 | 3. 종료
+메뉴를 선택하세요: 1
+상품 이름을 입력하세요: Iphone
+상품 가격을 입력하세요: 1550000
+1. 상품 등록 | 2. 상품 목록 | 3. 종료
+메뉴를 선택하세요: 1
+상품 이름을 입력하세요: Iphone 15
+상품 가격을 입력하세요: 1250000
+1. 상품 등록 | 2. 상품 목록 | 3. 종료
+메뉴를 선택하세요: 1
+상품 이름을 입력하세요: Iphone 14
+상품 가격을 입력하세요: 1090000
+1. 상품 등록 | 2. 상품 목록 | 3. 종료
+메뉴를 선택하세요: 1
+상품 이름을 입력하세요: Iphone 13
+상품 가격을 입력하세요: 950000
+1. 상품 등록 | 2. 상품 목록 | 3. 종료
+메뉴를 선택하세요: 1
+상품 이름을 입력하세요: Iphone SE
+상품 가격을 입력하세요: 650000
+1. 상품 등록 | 2. 상품 목록 | 3. 종료
+메뉴를 선택하세요: 1
+더 이상 상품을 등록할 수 없습니다.
+1. 상품 등록 | 2. 상품 목록 | 3. 종료
+메뉴를 선택하세요: 2
+MacBook Air: 1390000
+MacBook Pro: 1690000
+Ipad Pro: 1499000
+Ipad Air: 899000
+Ipad: 529000
+Iphone: 1550000
+Iphone 15: 1250000
+Iphone 14: 1090000
+Iphone 13: 950000
+Iphone SE: 650000
+1. 상품 등록 | 2. 상품 목록 | 3. 종료
+메뉴를 선택하세요: 3
+프로그램을 종료합니다.
+```
+
+**ProductAdminEx_2 (김영한 제안 코드)**
+
+```java
+package array.ex;
+
+import java.util.Scanner;
+
+public class ProductAdminEx_2 {
+    public static void main(String[] args) {
+        int maxProduct = 10;
+        String[] productName = new String[maxProduct];  // 상품 이름 최대 등록 갯수 10개
+        int[] productPrice = new int[maxProduct];  // 상품 가격 최대 등록 갯수 10개
+        int productCount = 0;  // 현재 상품 등록 개수
+
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            System.out.print("1. 상품 등록 | 2. 상품 목록 | 3. 종료\n메뉴를 선택하세요: ");
+            int menu = scanner.nextInt();
+            scanner.nextLine();  // \n 버림
+            // menu_1
+            if (menu == 1) {
+
+                if (productCount >= maxProduct){
+                    System.out.println("더 이상 상품을 등록할 수 없습니다.");
+                    continue;
+                }
+
+                System.out.print("상품 이름을 입력하세요: ");
+                productName[productCount] = scanner.nextLine();
+
+                System.out.print("상품 가격을 입력하세요: ");
+                productPrice[productCount] = scanner.nextInt();
+
+                productCount++;
+            
+            // menu_2
+            } else if (menu == 2) {
+                if (productCount == 0) {
+                    System.out.println("등록된 상품이 없습니다.");
+                    continue;
+                }
+                for (int i = 0; i < productCount; i++) {
+                    System.out.println(productName[i] + ": " + productPrice[i]);
+                }
+
+            // menu_3
+            } else if (menu == 3) {
+                System.out.println("프로그램을 종료합니다.");
+                break;
+            } else {
+                System.out.println("올바른 명령어를 입력하세요.");
+            }
+        }
+    }
+}
+```
+
+**실행결과**
+
+```java
+1. 상품 등록 | 2. 상품 목록 | 3. 종료
+메뉴를 선택하세요: 2
+등록된 상품이 없습니다.
+1. 상품 등록 | 2. 상품 목록 | 3. 종료
+메뉴를 선택하세요: 1
+상품 이름을 입력하세요: 1
+상품 가격을 입력하세요: 10
+1. 상품 등록 | 2. 상품 목록 | 3. 종료
+메뉴를 선택하세요: 1
+상품 이름을 입력하세요: 2
+상품 가격을 입력하세요: 20
+1. 상품 등록 | 2. 상품 목록 | 3. 종료
+메뉴를 선택하세요: 1
+상품 이름을 입력하세요: 3
+상품 가격을 입력하세요: 30
+1. 상품 등록 | 2. 상품 목록 | 3. 종료
+메뉴를 선택하세요: 1
+상품 이름을 입력하세요: 4
+상품 가격을 입력하세요: 40
+1. 상품 등록 | 2. 상품 목록 | 3. 종료
+메뉴를 선택하세요: 1
+상품 이름을 입력하세요: 5
+상품 가격을 입력하세요: 50
+1. 상품 등록 | 2. 상품 목록 | 3. 종료
+메뉴를 선택하세요: 1
+상품 이름을 입력하세요: 6
+상품 가격을 입력하세요: 60
+1. 상품 등록 | 2. 상품 목록 | 3. 종료
+메뉴를 선택하세요: 1
+상품 이름을 입력하세요: 7
+상품 가격을 입력하세요: 70
+1. 상품 등록 | 2. 상품 목록 | 3. 종료
+메뉴를 선택하세요: 1
+상품 이름을 입력하세요: 8
+상품 가격을 입력하세요: 80
+1. 상품 등록 | 2. 상품 목록 | 3. 종료
+메뉴를 선택하세요: 1
+상품 이름을 입력하세요: 9
+상품 가격을 입력하세요: 90
+1. 상품 등록 | 2. 상품 목록 | 3. 종료
+메뉴를 선택하세요: 1
+상품 이름을 입력하세요: 10
+상품 가격을 입력하세요: 100
+1. 상품 등록 | 2. 상품 목록 | 3. 종료
+메뉴를 선택하세요: 1
+더 이상 상품을 등록할 수 없습니다.
+1. 상품 등록 | 2. 상품 목록 | 3. 종료
+메뉴를 선택하세요: 2
+1: 10
+2: 20
+3: 30
+4: 40
+5: 50
+6: 60
+7: 70
+8: 80
+9: 90
+10: 100
+1. 상품 등록 | 2. 상품 목록 | 3. 종료
+메뉴를 선택하세요: 3
+프로그램을 종료합니다.
+```
