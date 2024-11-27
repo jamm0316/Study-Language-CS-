@@ -11,97 +11,6 @@
 
 ---
 
-## 스프링 환경설정하기
-
-- **Java Development Kit (JDK)**: JDK 11 version
-- **Spring Framework**: Spring Framework 5.3.29
-- **Spring Web MVC**: Spring Web MVC 5.3.29
-- **Lombok Library**: Lombok 1.18.24
-- **Apache Tomcat Server**: Tomcat 9.0.96
-
-**참고자료**
-
-https://www.youtube.com/watch?v=YyQq3y8FIHo
-
-- Source Code: xml
-    
-    https://github.com/jerry10004/SpringProject/tree/master/src/main/webapp/WEB-INF
-    
-- Maven dependency: spring Framework-webMVC
-    
-    https://mvnrepository.com/artifact/org.springframework/spring-webmvc
-    
-
-**폴더구성**
-
-```
-/src
- ∟ /webapp
-   ∟ /view
-	   ∟ /index
-   ∟ /WEB-INF
-	   ∟ /applicationContext.xml
-	   ∟ /dispatcher-serlvet.xml
-	   ∟ /web.xml
-```
-
-**web.xml**
-
-```xml
-<!DOCTYPE web-app PUBLIC
-        "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
-        "http://java.sun.com/dtd/web-app_2_3.dtd" >
-
-<web-app>
-  <display-name>Archetype Created Web Application</display-name>
-  <context-param>
-    <param-name>contextConfigLocation</param-name>
-    <param-value>/WEB-INF/applicationContext.xml</param-value>
-  </context-param>
-  <listener>
-    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-  </listener>
-  <servlet>
-    <servlet-name>dispatcher</servlet-name>
-    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-    <load-on-startup>1</load-on-startup>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>dispatcher</servlet-name>
-    <url-pattern>/</url-pattern>
-  </servlet-mapping>
-</web-app>
-```
-
-**dispatcher-serlvet.xml**
-
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:mvc="http://www.springframework.org/schema/mvc"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd">
-    <mvc:annotation-driven />
-    <context:component-scan base-package="com.example" />
-    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" >
-        <property name="prefix" value="/WEB-INF/views/" />
-        <property name="suffix" value=".jsp" />
-    </bean>
-</beans>
-```
-
-**applicationContext.xml**
-
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-
-</beans>
-```
-
 ## 스프링의 주요기능
 
 ![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/6b8d40ba-5287-42be-84df-56b1c96a2c05/d7cf4d35-2396-472e-af24-cbb535a09b65/image.png)
@@ -380,3 +289,336 @@ public class Person {
 
 - `arg`는 `index` 또는 `name`을 통해 주입할 수 있다.
 - field값이 객체일 경우 `ref=””` 를 사용하여 객체 `id` 주입
+
+## Spring Injection 방법
+
+### List 또는 배열
+
+**PersonVO**
+
+```java
+public class PersonVO {
+    String name;
+    int age;
+    CarVO car;
+    List<String> major;
+    List<LicenseVO> licenseList;
+}
+```
+
+**di4.xml**
+
+```java
+<bean id="lamborghini URUS" class="com.shinhan.mavenProject.section4.CarVO">
+    <property name="model" value="lamborghini"/>
+    <property name="price" value="300000000"/>
+    <property name="color" value="yellow"/>
+</bean>
+
+<bean id="evan" class="com.shinhan.mavenProject.section4.PersonVO">
+    <property name="name" value="evan"/>
+    <property name="age" value="32"/>
+    <property name="car" ref="lamborghini URUS"/>
+    <property name="major">
+        <list>
+            <value>컴공</value>
+            <value>경제</value>
+        </list>
+    </property>
+    <property name="licenseList">
+        <list>
+            <ref bean="license1"/>
+            <ref bean="license2"/>
+        </list>
+    </property>
+</bean>
+```
+
+### Map, Properties
+
+**PersonVO**
+
+```java
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter @Setter
+@ToString
+public class PersonVO {
+    String name;
+    int age;
+    CarVO car;
+    List<String> major;
+    List<LicenseVO> licenseList;
+    Map<String, BookVO> bookMap;
+    Properties myProfile;
+}
+```
+
+- properties도 map이다. key, value 중 value가 무조건 문자일 때 사용
+
+**di4.xml**
+
+```java
+<property name="bookMap">
+        <map>
+            <entry>
+                <key>
+                    <value>내책1</value>
+                </key>
+                <ref bean="book1"/>
+            </entry>
+            <entry>
+                <key>
+                    <value>내책2</value>
+                </key>
+                <ref bean="book2"/>
+            </entry>
+        </map>
+</property>
+<property name="myProfile">
+    <props>
+        <prop key="email">jamm0316@naver.com</prop>
+        <prop key="phone">010-6682-6308</prop>
+    </props>
+</property>
+```
+
+### Set
+
+**PersonVO**
+
+```java
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter @Setter
+@ToString
+public class PersonVO {
+    String name;
+    int age;
+    CarVO car;
+    List<String> major;
+    List<LicenseVO> licenseList;
+    Map<String, BookVO> bookMap;
+    Set<String> friends;
+}
+```
+
+**di4.xml**
+
+```java
+<property name="friends">
+    <set>
+        <value>대의찬</value>
+        <value>갓서희</value>
+        <value>킹신영</value>
+        <value>왕시현</value>
+    </set>
+</property>
+```
+
+### 의존관계 자동설정
+
+**byName**
+
+- field과 bean의 id가 같으면 그것을 propertis로 주입시킴.
+
+```java
+<bean id="person2" class="com.shinhan.mavenProject.section4.PersonVO" autowire="byName">
+```
+
+**byType**
+
+- filed와 type이 같으면 bean이 있으면 그것을 properties로 주입시킴.
+    
+    ```java
+    <bean id="person2" class="com.shinhan.mavenProject.section4.PersonVO" autowire="byType">
+    ```
+    
+- 같은 타입의 bean이 2개 이상 있으면 `UnsatisfiedDependencyException` 예외가 뜬다
+→ **만족되지 않은 종속성예외**
+
+## Bean 객체의 범위
+
+기본적으로 컨테이너에 한개의 bean 생성
+
+scope속성을 이용하여 범위 설정 가능
+
+![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/6b8d40ba-5287-42be-84df-56b1c96a2c05/6b0843d6-3583-410e-9ed8-fec41077f74e/image.png)
+
+**di4.xml**
+
+```java
+<bean id="person2" class="com.shinhan.mavenProject.section4.PersonVO" autowire="byName" scope="singleton">
+```
+
+## Annotation 기반 설정
+
+**특징**
+
+- 자바 annotation으로 xml설정을 대신함.
+- 설정파일 간결화 가능
+- 클래스 필드, 메소드를 관리
+- 가독성이 좋음
+
+**주요 Annotation**
+
+![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/6b8d40ba-5287-42be-84df-56b1c96a2c05/b09adf7c-e500-4808-88ed-73efed57def3/image.png)
+
+## Java 기반 설정
+
+Spring 3.0 부터 자바 클래스에서 `@Configuration`, 메서드에 `@Bean`을 사용
+
+**Appconfig**
+
+```java
+//section 4까지는 xml설정을 통해서 bean을 생성함.
+//section 5부터는 자바 소스를 이용해서 bean생성.
+@Configuration  //설정파일이다.
+@ComponentScan  //이 파일을 스캔하도록 애노테이션을 달아놓는다.
+public class AppConfig {
+
+    @Bean  //<bean id="getCar" class="com.shinhan.mavenProject.CarVO"></bean>
+    public CarVO getCar() {
+        System.out.println("AppConfig.getCar");
+        return new CarVO("lamborghini", 300000000, "yellow");
+    }
+}
+```
+
+**App**
+
+```java
+public class App {
+    public static void main(String[] args) {
+        ApplicationContext ctx = new AnnotationConfigApplicationContext(AppConfig.class);
+
+        ctx.getBean("getCar", CarVO.class);
+    }
+}
+```
+
+---
+
+- 각 애너테이션 사용 설명
+    
+    ### 1. `@Component`, `@Service`, `@Repository`, `@Bean`에 대한 설명
+    
+    - **`@Component`**, **`@Service`**, **`@Repository`**
+        - **모두 클래스**를 스프링 컨테이너에 빈으로 등록하는 역할을 한다.
+        - 이들은 역할에 따라 구분되며, 스프링이 특정 목적으로 빈을 구별하거나 처리할 때 사용된다.
+            - `@Component`: 범용적으로 사용되는 애너테이션.
+            - `@Service`: 서비스 계층(비즈니스 로직)에 사용.
+            - `@Repository`: 데이터 액세스 계층(DAO)에 사용하며, 스프링이 예외를 변환하는 추가 기능을 제공.
+    - **`@Bean`**
+        - 클래스의 **메서드를 빈으로 등록**하는 데 사용된다.
+        - 일반적으로 Java Config 클래스(`@Configuration` 붙은 클래스)에서 사용된다.
+        - 즉, 메서드 수준에서 동작하며, 메서드 반환 객체가 스프링 컨테이너에 빈으로 등록된다.
+    - **개선된 설명**:
+        
+        > @Component, @Service, @Repository는 클래스 전체를 빈으로 등록하는 데 사용되고,
+        > 
+        > 
+        > `@Bean`은 **메서드 반환 객체를 빈으로 등록**하는 데 사용된다.
+        > 
+        > 모두 스프링 컨테이너에 빈을 생성하고 관리하는 역할을 한다.
+        > 
+    
+    ---
+    
+    ### 2. `@Autowired`에 대한 설명
+    
+    - **정확한 역할**:
+        - `@Autowired`는 **스프링 컨테이너에 등록된 빈을 찾아서 의존성을 주입(DI)하는 역할**을 한다.
+        - 이는 **필드, 생성자, 또는 세터 메서드**에 사용 가능하다.
+    - **추가 설명**:
+        - DI는 필드에 값을 "자동으로 넣어준다"고 표현할 수 있지만, **필드에 직접 값을 넣는 것은 권장되지 않는 방식**이다.
+        - **생성자 주입**(constructor injection)을 사용하는 것이 더 권장되는 패턴이다.
+    - **필드 주입의 한계**:
+        - 테스트가 어렵고, 의존성이 명시적으로 보이지 않아서 코드 가독성이 떨어질 수 있다.
+    
+    ---
+    
+    ### 3. 코드 분석과 개선
+    
+    ### 코드:
+    
+    ```java
+    @Service
+    public class DeptService {
+    
+        @Autowired
+        DeptDAO deptDao;
+    }
+    
+    ```
+    
+    - **설명**:
+        1. `@Service`는 `DeptService` 클래스를 빈으로 등록한다.
+        2. `@Autowired`는 **스프링 컨테이너에서 `DeptDAO` 타입의 빈을 찾아** `deptDao` 필드에 주입한다.
+    - **정확한 표현**:
+        - `deptDao`에 주입되는 것은 **빈의 참조(reference)**이다.
+        따라서 "빈을 ref로 주입한다"는 표현이 맞다.
+    - **권장 방식 (생성자 주입)**:
+        
+        ```java
+        @Service
+        public class DeptService {
+        
+            private final DeptDAO deptDao;
+        
+            @Autowired
+            public DeptService(DeptDAO deptDao) {
+                this.deptDao = deptDao;
+            }
+        }
+        
+        ```
+        
+        - 이 방식은 의존성을 더 명확히 표현하고 테스트 가능성을 높여준다.
+    
+    ---
+    
+    ### 4. DI에 대한 설명
+    
+    - **DI (Dependency Injection)**:
+        - 등록된 빈을 **다른 빈의 필드, 생성자 매개변수, 또는 세터 메서드에 주입**하는 과정이다.
+        - `@Autowired`는 **필드, 생성자, 또는 세터에 DI를 실행하는 도구**이다.
+    - **추가로 명확히 할 점**:
+        - DI는 **필드에 값을 넣어주는 것만을 의미하지 않는다.**
+        생성자나 세터 주입도 모두 DI의 일종이다.
+    
+    ---
+    
+    ### 5. 최종 정리 (수정된 설명)
+    
+    1. *`@Component`, `@Service`, `@Repository`*는 **클래스를 빈으로 등록**하고,
+        
+        **`@Bean`**은 **메서드 반환 객체를 빈으로 등록**한다.
+        
+        이는 모두 **빈을 생성하는 역할**을 한다.
+        
+    2. *`@Autowired`*는 **스프링 컨테이너에서 등록된 빈을 찾아** 해당 필드, 생성자, 또는 세터에 **의존성을 주입(DI)**한다.
+    3. DI는 등록된 빈의 **참조를 다른 빈에 연결해주는 과정**이며, 이는 **필드, 생성자, 또는 세터**를 통해 이루어진다.
+    4. **코드 분석**:
+        
+        ```java
+        @Service
+        public class DeptService {
+        
+            @Autowired
+            DeptDAO deptDao;
+        }
+        ```
+        
+        - `@Service`로 `DeptService`를 빈으로 등록하고,
+        - `@Autowired`를 통해 `deptDao`라는 `DeptDAO` 타입의 빈을 찾아 **주입**한다.
+    
+    위 애너테이션을 스캔하려면 아래 코드가 di.xml에 있어야한다.
+    
+    ```xml
+    <context:component-scan base-package="com.shinhan.mavenProject.section6"/>
+    ```
+    
+    ### 결론
+    
+    기본적으로 네 설명은 거의 맞았고, 다만 **DI가 필드 주입만을 의미하지 않으며 생성자나 세터 주입도 포함된다**는 점을 보완하면 더욱 정확한 이해가 될 거야! 😊
