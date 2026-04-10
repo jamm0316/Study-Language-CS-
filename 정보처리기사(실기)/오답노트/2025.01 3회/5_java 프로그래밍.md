@@ -42,5 +42,4 @@ sol) try-catch-finally
 - try-catch 구문 실행 후 finally는 반드시 실행된다.
 
 **정답:
-출력1
-출력5**
+출력1출력5**
